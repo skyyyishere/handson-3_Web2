@@ -1,0 +1,26 @@
+Eksperimen 1
+sessionTest: hilang saat close page
+persistentTest: ada bahkan saat close page
+
+Eksperimen 2
+| **Halaman**                   | **cookieRoot** | **cookieAdmin** |
+| ---                           | ---            | ---             |
+| `/index.html`                 | ada            | tidak ada       |
+| `/admin/index.html`           | ada            | ada             |
+| `/admin/dashboard/index.html` | ada            | ada             |
+
+Cookie dengan Path=/admin akan dikirim ke:
+- /admin ✓ atau ✗? ✓
+- /admin/dashboard ✓ atau ✗? ✓
+- /profile ✓ atau ✗?
+- / ✓ atau ✗? ✗
+
+Eksperimen 3
+Cookie Secure tersimpan di localhost HTTP? Ya
+Mengapa bisa tersimpan? karena cookienya masih di localhost
+
+Pertanyaan Refleksi
+- Mengapa session cookie (tanpa Max-Age) berguna untuk login?
+agar mencegah apabila user lupa untuk logout dari web, ketika web di close halaman login tidak akan tersimpan
+
+- Jika kamu membuat aplikasi e-commerce, atribut apa yang akan kamu gunakan untuk cookie session ID? Jelaskan alasannya.

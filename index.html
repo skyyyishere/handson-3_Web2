@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Counter Lab</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Cookie Counter Lab</h1>
+
+        <!-- Counter Display -->
+        <section class="counter-section">
+            <h2>Visit Counter</h2>
+            <div class="counter-display">
+                <span id="visitCount">0</span>
+            </div>
+            <p>Kamu sudah mengunjungi halaman ini <strong id="visitText">0</strong> kali</p>
+            <button id="resetBtn">Reset Counter</button>
+        </section>
+
+        <!-- Cookie Inspector -->
+        <section class="inspector-section">
+            <h2>Cookie Inspector</h2>
+            <div class="cookie-list" id="cookieList">
+                <p class="placeholder">Belum ada cookie...</p>
+            </div>
+        </section>
+
+        <!-- Cookie Creator -->
+        <section class="creator-section">
+            <h2>Cookie Creator</h2>
+            <form id="cookieForm">
+                <div class="form-group">
+                    <label for="cookieName">Nama Cookie:</label>
+                    <input type="text" id="cookieName" placeholder="contoh: theme" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cookieValue">Nilai Cookie:</label>
+                    <input type="text" id="cookieValue" placeholder="contoh: dark" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="maxAge">Max-Age (detik):</label>
+                    <input type="number" id="maxAge" placeholder="3600 = 1 jam">
+                    <small>Kosongkan untuk session cookie</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="path">Path:</label>
+                    <input type="text" id="path" placeholder="/" value="/">
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="secureFlag">
+                        Secure (hanya HTTPS)
+                    </label>
+                </div>
+
+                <button type="submit">Buat Cookie</button>
+            </form>
+        </section>
+
+        <!-- Experiment Results -->
+        <section class="results-section">
+            <h2>Catatan Eksperimen</h2>
+            <textarea id="notes" placeholder="Catat hasil eksperimen kamu di sini..."></textarea>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
