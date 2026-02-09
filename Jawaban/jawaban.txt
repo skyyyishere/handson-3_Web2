@@ -24,3 +24,12 @@ Pertanyaan Refleksi
 agar mencegah apabila user lupa untuk logout dari web, ketika web di close halaman login tidak akan tersimpan
 
 - Jika kamu membuat aplikasi e-commerce, atribut apa yang akan kamu gunakan untuk cookie session ID? Jelaskan alasannya.
+1. HttpOnly
+    - Agar cookie tidak dapat diakses oleh JavaScript
+    - Menghindari adanya bahaya XSS
+2. MaxAge
+    - Menghindari terlalu lama idle (Session auto-expire)
+    - Mengurangi resiko session hijacking
+3. Secure
+    - Cookie hanya dikirim melalui HTTPS
+    - Mencegah pencurian session MITM
