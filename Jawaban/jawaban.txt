@@ -33,3 +33,23 @@ agar mencegah apabila user lupa untuk logout dari web, ketika web di close halam
 3. Secure
     - Cookie hanya dikirim melalui HTTPS
     - Mencegah pencurian session MITM
+
+- Apa risiko keamanan jika cookie session TIDAK menggunakan HttpOnly?
+Tanpa HttpOnly, cookie dapat terbaca JavaScript. Dan apabila terjadi Cross Site Scripting (XSS), session bisa dicuri
+
+- Kapan sebaiknya menggunakan Expires vs Max-Age?
+Gunakan Max-Age ketika:
+1. Ingin menentukan durasi relatif
+2. Ingin lebih presisi dan konsisten
+
+Gunakan Expires ketika:
+1. Butuh kompatibilitas dengan browser lama
+2. Ingin menetapkan tanggal tertentu
+
+- Apa yang terjadi jika Domain cookie di-set ke .example.com?
+Jika domain cookie di-set ke .example.com, maka cookie akan dikirim ke:
+1. example.com
+2. www.example.com
+3. api.example.com
+4. admin.example.com
+(dan subdomain lainnya).
