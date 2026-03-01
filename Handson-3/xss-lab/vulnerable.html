@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XSS Lab - VULNERABLE VERSION</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="warning-banner">
+            PERHATIAN: Halaman ini SENGAJA dibuat vulnerable untuk pembelajaran!
+        </div>
+
+        <h1>Kolom Komentar Blog</h1>
+        <p class="subtitle">Versi VULNERABLE - Jangan gunakan di production!</p>
+
+        <!-- Comment Form -->
+        <section class="comment-form">
+            <h2>Tulis Komentar</h2>
+            <form id="commentForm">
+                <div class="form-group">
+                    <label for="username">Nama:</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="comment">Komentar:</label>
+                    <textarea id="comment" rows="4" required></textarea>
+                </div>
+                <button type="submit">Kirim Komentar</button>
+            </form>
+        </section>
+
+        <!-- Comment Display -->
+        <section class="comments-section">
+            <h2>Komentar</h2>
+            <div id="commentsList">
+                <!-- Comments will appear here -->
+            </div>
+        </section>
+
+        <!-- XSS Payloads untuk Testing -->
+        <section class="payload-section">
+            <h2>XSS Payloads untuk Testing</h2>
+            <p>Copy-paste payload ini ke form komentar untuk melihat XSS bekerja:</p>
+
+            <div class="payload-list">
+                <div class="payload-item">
+                    <strong>1. Basic Alert:</strong>
+                    <code>&lt;script&gt;alert('XSS!')&lt;/script&gt;</code>
+                    <button onclick="copyPayload(this)">Copy</button>
+                </div>
+
+                <div class="payload-item">
+                    <strong>2. Image Onerror:</strong>
+                    <code>&lt;img src="x" onerror="alert('XSS via img!')"&gt;</code>
+                    <button onclick="copyPayload(this)">Copy</button>
+                </div>
+
+                <div class="payload-item">
+                    <strong>3. SVG Onload:</strong>
+                    <code>&lt;svg onload="alert('XSS via svg!')"&gt;</code>
+                    <button onclick="copyPayload(this)">Copy</button>
+                </div>
+
+                <div class="payload-item">
+                    <strong>4. Cookie Stealer (simulasi):</strong>
+                    <code>&lt;img src="x" onerror="alert('Cookie: ' + document.cookie)"&gt;</code>
+                    <button onclick="copyPayload(this)">Copy</button>
+                </div>
+
+                <div class="payload-item">
+                    <strong>5. DOM Manipulation:</strong>
+                    <code>&lt;img src="x" onerror="document.body.style.background='red'"&gt;</code>
+                    <button onclick="copyPayload(this)">Copy</button>
+                </div>
+            </div>
+        </section>
+
+        <a href="secure.html" class="nav-link">Lihat Versi Secure &rarr;</a>
+    </div>
+
+    <script>
+        // Set a test cookie for demonstration
+        document.cookie = "sessionId=abc123xyz; path=/";
+        document.cookie = "username=JohnDoe; path=/";
+
+        // VULNERABLE: Comments storage
+        let comments = [];
+
+        // VULNERABLE: Handle form submission
+        document.getElementById('commentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const comment = document.getElementById('comment').value;
+
+            // Store comment (simulating database)
+            comments.push({ username, comment });
+
+            // VULNERABLE: Display comments using innerHTML
+            displayComments();
+
+            // Reset form
+            this.reset();
+        });
+
+        // VULNERABLE: Display function using innerHTML
+        function displayComments() {
+            const container = document.getElementById('commentsList');
+
+            if (comments.length === 0) {
+                container.innerHTML = '<p class="no-comments">Belum ada komentar.</p>';
+                return;
+            }
+
+            // VULNERABLE CODE - NEVER DO THIS IN PRODUCTION!
+            let html = '';
+            comments.forEach((c, index) => {
+                html += `
+                    <div class="comment-card">
+                        <div class="comment-header">
+                            <strong>${c.username}</strong>
+                            <span class="comment-time">Baru saja</span>
+                        </div>
+                        <div class="comment-body">
+                            ${c.comment}
+                        </div>
+                    </div>
+                `;
+            });
+
+            // THIS IS THE VULNERABILITY!
+            container.innerHTML = html;
+        }
+
+        // Helper function to copy payload
+        function copyPayload(button) {
+            const code = button.previousElementSibling.textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                button.textContent = 'Copied!';
+                setTimeout(() => button.textContent = 'Copy', 1500);
+            });
+        }
+
+        // Initialize display
+        displayComments();
+    </script>
+</body>
+</html>

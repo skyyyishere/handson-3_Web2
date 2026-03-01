@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XSS Lab - SECURE VERSION</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
+</head>
+<body>
+    <div class="container">
+        <div class="secure-banner">
+            Halaman ini menggunakan teknik pencegahan XSS
+        </div>
+
+        <h1>Kolom Komentar Blog</h1>
+        <p class="subtitle">Versi SECURE - Menggunakan best practices</p>
+
+        <!-- Comment Form -->
+        <section class="comment-form">
+            <h2>Tulis Komentar</h2>
+            <form id="commentForm">
+                <div class="form-group">
+                    <label for="username">Nama:</label>
+                    <input type="text" id="username" required maxlength="50">
+                    <small>Maksimal 50 karakter, hanya huruf dan angka</small>
+                </div>
+                <div class="form-group">
+                    <label for="comment">Komentar:</label>
+                    <textarea id="comment" rows="4" required maxlength="500"></textarea>
+                    <small>Maksimal 500 karakter</small>
+                </div>
+                <button type="submit">Kirim Komentar</button>
+            </form>
+        </section>
+
+        <!-- Comment Display -->
+        <section class="comments-section">
+            <h2>Komentar</h2>
+            <div id="commentsList">
+                <!-- Comments will appear here -->
+            </div>
+        </section>
+
+        <!-- Security Measures Explanation -->
+        <section class="security-info">
+            <h2>Teknik Keamanan yang Digunakan</h2>
+            <ul>
+                <li><strong>textContent</strong> - Menampilkan input sebagai teks, bukan HTML</li>
+                <li><strong>createElement</strong> - Membuat elemen secara programatis</li>
+                <li><strong>Input Validation</strong> - Membatasi panjang dan karakter</li>
+                <li><strong>CSP Header</strong> - Membatasi sumber script</li>
+            </ul>
+        </section>
+
+        <!-- Compare Code -->
+        <section class="code-compare">
+            <h2>Perbandingan Kode</h2>
+
+            <div class="code-block vulnerable">
+                <h3>VULNERABLE</h3>
+                <pre>
+// JANGAN LAKUKAN INI!
+container.innerHTML = `
+  &lt;div class="comment"&gt;
+    &lt;strong&gt;${username}&lt;/strong&gt;
+    &lt;p&gt;${comment}&lt;/p&gt;
+  &lt;/div&gt;
+`;
+                </pre>
+            </div>
+
+            <div class="code-block secure">
+                <h3>SECURE</h3>
+                <pre>
+// Gunakan textContent & createElement
+const card = document.createElement('div');
+card.className = 'comment';
+
+const name = document.createElement('strong');
+name.textContent = username; // SAFE!
+
+const text = document.createElement('p');
+text.textContent = comment; // SAFE!
+
+card.appendChild(name);
+card.appendChild(text);
+container.appendChild(card);
+                </pre>
+            </div>
+        </section>
+
+        <a href="vulnerable.html" class="nav-link">&larr; Kembali ke Versi Vulnerable</a>
+    </div>
+
+    <script>
+        // Comments storage
+        let comments = [];
+
+        // Input validation function
+        function sanitizeInput(input) {
+            // Remove leading/trailing whitespace
+            let clean = input.trim();
+
+            // Limit length
+            if (clean.length > 500) {
+                clean = clean.substring(0, 500);
+            }
+
+            return clean;
+        }
+
+        // Validate username (alphanumeric only)
+        function validateUsername(username) {
+            const pattern = /^[a-zA-Z0-9_\s]+$/;
+            return pattern.test(username) && username.length <= 50;
+        }
+
+        // SECURE: Handle form submission
+        document.getElementById('commentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const comment = document.getElementById('comment').value;
+
+            // Validate username
+            if (!validateUsername(username)) {
+                alert('Nama hanya boleh mengandung huruf, angka, dan underscore!');
+                return;
+            }
+
+            // Sanitize inputs
+            const cleanUsername = sanitizeInput(username);
+            const cleanComment = sanitizeInput(comment);
+
+            // Store comment
+            comments.push({
+                username: cleanUsername,
+                comment: cleanComment,
+                timestamp: new Date().toLocaleString('id-ID')
+            });
+
+            // SECURE: Display comments
+            displayComments();
+
+            // Reset form
+            this.reset();
+        });
+
+        // SECURE: Display function using createElement and textContent
+        function displayComments() {
+            const container = document.getElementById('commentsList');
+
+            // Clear existing content
+            container.innerHTML = '';
+
+            if (comments.length === 0) {
+                const noComments = document.createElement('p');
+                noComments.className = 'no-comments';
+                noComments.textContent = 'Belum ada komentar.';
+                container.appendChild(noComments);
+                return;
+            }
+
+            // SECURE: Create elements programmatically
+            comments.forEach((c) => {
+                // Create card container
+                const card = document.createElement('div');
+                card.className = 'comment-card';
+
+                // Create header
+                const header = document.createElement('div');
+                header.className = 'comment-header';
+
+                const nameEl = document.createElement('strong');
+                nameEl.textContent = c.username; // SECURE: textContent!
+
+                const timeEl = document.createElement('span');
+                timeEl.className = 'comment-time';
+                timeEl.textContent = c.timestamp;
+
+                header.appendChild(nameEl);
+                header.appendChild(timeEl);
+
+                // Create body
+                const body = document.createElement('div');
+                body.className = 'comment-body';
+                body.textContent = c.comment; // SECURE: textContent!
+
+                // Assemble card
+                card.appendChild(header);
+                card.appendChild(body);
+
+                // Add to container
+                container.appendChild(card);
+            });
+        }
+
+        // Initialize display
+        displayComments();
+    </script>
+</body>
+</html>

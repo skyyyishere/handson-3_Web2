@@ -1,0 +1,12 @@
+1. Mengapa session token TIDAK boleh disimpan di LocalStorage?
+Karena tokennya bisa diakses oleh JavaScript
+
+2. Apa keuntungan SessionStorage untuk multi-step form dibanding LocalStorage?
+- Terisolasi per tab
+- Otomatis hilang saat tab ditutup
+- Bersifat sementara dan tidak meninggalkan data lama setelah sesi selesai
+
+3. Jika kamu membuat aplikasi todo list offline-first, storage mana yang akan kamu gunakan dan mengapa?
+Untuk todo list offline-first:
+Minimal -> LocalStorage
+Lebih scalable & production-ready -> IndexedDB

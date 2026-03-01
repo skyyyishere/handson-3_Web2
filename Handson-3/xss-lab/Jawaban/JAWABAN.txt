@@ -1,0 +1,23 @@
+1. Mengapa <img onerror> bisa menjalankan JavaScript?
+Karena onerror adalah event handler HTML yang berisi kode JavaScript
+
+2. Apa perbedaan antara Stored XSS dan Reflected XSS dari perspektif attacker?
+Stored XSS =
+- Payload disimpan di server
+- Setiap user yang membuka halaman tersebut otomatis kena
+- Lebih berbahaya karena persistent dan tidak perlu memancing korban
+
+Reflected XSS =
+- Payload tidak disimpan di server
+- Biasanya dikirim lewat URL atau form
+- Hanya korban yang membuka link yang kena
+
+3. Mengapa HttpOnly cookie penting dalam konteks XSS?
+HttpOnly mencegah dampak buruk dari XSS, yaitu pencurian session (Session Hijacking)
+
+4. Jika kamu perlu menampilkan rich text (dengan formatting), bagaimana caranya agar tetap aman?
+Bisa menggunakan HTML Sanitization atau Library Sanitizer yang trusted
+
+5. Apa kegunaan Content Security Policy (CSP) header?
+Content Security Policy (CSP) adalah lapisan pertahanan tambahan yang bisa mengontrol apa yang boleh dijalankan
+browser, sehingga membantu mencegah dampak dari XSS dan serangan lainnya.

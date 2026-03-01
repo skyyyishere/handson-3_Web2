@@ -1,0 +1,42 @@
+Eksperimen 1:
+Cookies: Masih ada
+LocalStorage: Masih ada
+SessionStorage: Hilang
+
+Eksperimen 2:
+Nilai counter di tab baru: 0
+Nilai counter di tab lama: 5
+Kesimpulan = SessionStorage adalah tab-isolated
+
+Eksperimen 3:
+Cookies: +- 4 KB per cookie
+LocalStorage: +- 5-10 MB per origin
+SessionStorage: +- 5-10 MB per origin
+
+Eksperimen 4:
+1. Data login session
+Cookie (HttpOnly + Secure)
+Alasan =
+- Perlu dikirim otomatis ke server setiap request
+- Harus dilindungi dari XSS
+- Standar praktik autentikasi web
+
+2. Preferensi tema
+LocalStorage
+Alasan =
+- Tidak perlu dikirim ke server
+- Harus tetap ada walau browser ditutup
+- Aman disimpan di client
+
+3. Counter per tab
+SessionStorage
+Alasan = 
+- Data hanya berlaku untuk 1 tab
+- Hilang saat tab ditutup
+- Tidak berbagi data antar tab
+
+4. Data sensitif
+HttpOnly Cookie
+Alasan =
+- LocalStorage & SessionStorage bisa diakses JavaScript
+- HttpOnly cookie tidak bisa diakses lewat document.cookie
